@@ -1,0 +1,157 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1">
+		
+		<title>weather</title>
+
+		<!-- Loading third party fonts -->
+		<link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700|" rel="stylesheet" type="text/css">
+		<link href="{% static "fonts/font-awesome.min.css" %}" rel="stylesheet" type="text/css">
+
+		<!-- Loading main css file -->
+		<link rel="stylesheet" href="{% static "style.css" %}">
+		
+
+        <style>
+            #map {
+                height: 350px;
+                width: 1150px;
+            }
+        </style>
+
+	</head>
+
+
+	<body>
+		<div class="site-content">
+
+			<div class="hero" data-bg-image="{% static "images/banner_b.jpg" %}">
+				<div class="container">
+					<form method="post" class="find-location">
+                        {% csrf_token %}
+                        {{ form }}
+						<!--<input type="text" placeholder="Find your location...">-->
+						<input type="submit" value="Find">
+					</form>
+
+				</div>
+			</div>
+
+
+			<div class="forecast-table">
+				<div class="container">
+					<div class="forecast-container">
+						<div class="today forecast">
+							<div class="forecast-header">
+								<div class="day"></div>
+								<div class="date">{{ db_forecast0.date }}</div>
+							</div> <!-- .forecast-header -->
+							<div class="forecast-content">
+								<div class="location">{{ db_city.city_name }}</div>
+								<div class="degree">
+									<div class="num">{{ db_forecast0.temp }}<sup>o</sup>C</div>
+									<div class="forecast-icon">
+										<img src="static/images/icons/{{ image0 }}" alt="" width=90>
+									</div>	
+								</div>
+								<span>{{ state }}</span>
+								<span><img src="{% static "images/icon-wind.png" %}" alt="">{{ db_forecast0.wind_speed }}</span>
+								<span><img src="{% static "images/icon-compass.png" %}" alt="">{{ db_forecast0.wind_direction }}</span>
+							</div>
+						</div>
+						<div class="forecast">
+							<div class="forecast-header">
+								<div class="day">{{ db_forecast1.date }}</div>
+							</div> <!-- .forecast-header -->
+							<div class="forecast-content">
+								<div class="forecast-icon">
+									<img src="static/images/icons/{{ image1 }}" alt="" width=48>
+								</div>
+								<div class="degree">{{ db_forecast1.temp }}<sup>o</sup>C</div>
+								<small>{{ db_forecast1.conditions }}</small>
+							</div>
+						</div>
+						<div class="forecast">
+							<div class="forecast-header">
+								<div class="day">{{ db_forecast2.date }}</div>
+							</div> <!-- .forecast-header -->
+							<div class="forecast-content">
+								<div class="forecast-icon">
+									<img src="static/images/icons/{{ image2 }}" alt="" width=48>
+								</div>
+								<div class="degree">{{ db_forecast2.temp }}<sup>o</sup>C</div>
+								<small>{{ db_forecast2.conditions }}</small>
+							</div>
+						</div>
+						<div class="forecast">
+							<div class="forecast-header">
+								<div class="day">{{ db_forecast3.date }}</div>
+							</div> <!-- .forecast-header -->
+							<div class="forecast-content">
+								<div class="forecast-icon">
+									<img src="static/images/icons/{{ image3 }}" alt="" width=48>
+								</div>
+								<div class="degree">{{ db_forecast3.temp }}<sup>o</sup>C</div>
+								<small>{{ db_forecast3.conditions }}</small>
+							</div>
+						</div>
+						<div class="forecast">
+							<div class="forecast-header">
+								<div class="day">{{ db_forecast4.date }}</div>
+							</div> <!-- .forecast-header -->
+							<div class="forecast-content">
+								<div class="forecast-icon">
+									<img src="static/images/icons/{{ image4 }}" alt="" width=48>
+								</div>
+								<div class="degree">{{ db_forecast4.temp }}<sup>o</sup>C</div>
+								<small>{{ db_forecast4.conditions }}</small>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+
+            <div class="fullwidth-block">
+                <div class="container">
+                    <h2 class="section-title">Map</h2>
+                </div>
+            </div>
+
+            <main class="main-content">
+				<div class="fullwidth-block">
+                    <div class="container">
+                        <div class="forecast-table">
+                            <div class="forecast-container">
+                                <div class="map" id="map"></div>
+                            </div>
+                        </div>
+					</div>
+				</div>
+            </main>
+
+		</div>
+		
+		<script src="{% static "js/jquery-1.11.1.min.js" %}"></script>
+		<script src="{% static "js/plugins.js" %}"></script>
+		<script src="{% static "js/app.js" %}"></script>
+
+		<script>
+            var map;
+            function initMap() {
+                map = new google.maps.Map(document.getElementById('map'), {
+                    center: {lat: {{ db_city.lat }}, lng: {{ db_city.lon }}},
+                    zoom: 8
+                });
+            }
+        </script>
+        <script async defer
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcd1WPGFQVkoLMPlgQVzIxTq0Ib9ITUjM&callback=initMap">
+        </script>
+	</body>
+
+</html>
